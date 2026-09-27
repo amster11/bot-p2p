@@ -6,3 +6,6 @@ config/config.yaml
 *.db
 .pytest_cache/
 *.egg-info/
+.ssh/
+probe.log
+.cache/

@@ -51,3 +51,21 @@ src/p2phunter/
 ## Если биржа сломалась
 
 P2P-эндпоинты неофициальные и могут поменяться. Порядок действий: запустить `probe`, открыть P2P-страницу биржи в браузере, в DevTools → Network найти запрос со списком объявлений, сравнить его адрес, параметры и поля ответа с кодом в `exchanges/<name>.py`, поправить.
+
+## Установка на VPS
+
+Скрипт `deploy/install.sh` (запуск от root, можно повторять — он же обновляет код):
+создаёт пользователя `p2pbot`, кладёт код в `/opt/p2p-bot`, ставит свой venv, создаёт `.env` с правами 600
+и запускает диагностику бирж. Системные пакеты не ставит, nginx, firewall и SSH не трогает, портов не открывает.
+
+Репозиторий приватный, поэтому при первом запуске скрипт создаёт deploy key и просит добавить его
+в GitHub (Settings → Deploy keys, только чтение), после чего скрипт запускается ещё раз.
+
+Запуск одной командой из Windows (cmd или PowerShell), из папки, где лежит `install.sh`:
+
+```
+cmd /c "ssh -i %USERPROFILE%\.ssh\vps_claude -o IdentitiesOnly=yes root@<IP> bash -s < install.sh"
+```
+
+systemd-сервис `p2p-bot` (MemoryMax=400M, CPUQuota=50%, Restart=always, от пользователя p2pbot)
+ставится флагом `--service`, когда в коде появится сам бот: `bash /opt/p2p-bot/deploy/install.sh --service`.
