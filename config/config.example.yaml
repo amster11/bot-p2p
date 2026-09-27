@@ -1,0 +1,46 @@
+# Скопируйте в config/config.yaml и поправьте под себя.
+
+scan:
+  interval_sec: 45          # как часто опрашивать биржи
+  stale_after_sec: 120      # данные старше этого считаются устаревшими
+
+work:
+  fiat: RUB
+  assets: [USDT]            # монеты для P2P-маршрутов
+  amount_fiat: 100000       # рабочая сумма, ₽
+  min_profit_pct: 1.5       # порог чистой прибыли, %
+  spot_symbols: []          # монеты для спотовых маршрутов, например [BTC, ETH, TON]
+
+filters:
+  min_seller_orders: 50         # минимум сделок у контрагента
+  min_seller_completion: 0.90   # минимальный % завершения (0..1)
+  max_price_deviation_pct: 5    # отклонение цены от медианы, после которого объявление отбрасывается
+
+exchanges:
+  bybit:
+    enabled: true
+    p2p_fee_pct: 0              # комиссия P2P для тейкера
+    spot_taker_fee_pct: 0.1
+    # Коды способов оплаты у каждой биржи свои — заполняются после проверки probe-скриптом
+    payment_methods: {}         # например: {sber: "582", tbank: "581"}
+  mexc:
+    enabled: true
+    p2p_fee_pct: 0
+    spot_taker_fee_pct: 0.05
+    payment_methods: {}
+  bitget:
+    enabled: true
+    p2p_fee_pct: 0
+    spot_taker_fee_pct: 0.1
+    payment_methods: {}
+
+# Биржи называют одни и те же сети по-разному. Здесь всё приводится к одному имени.
+network_aliases:
+  TRC20: [TRX, TRC20, "TRON", "Tron(TRC20)", "TRON(TRC20)"]
+  ERC20: [ETH, ERC20, "Ethereum(ERC20)", "ETHEREUM"]
+  BEP20: [BSC, BEP20, "BNB Smart Chain(BEP20)", "BEP20(BSC)"]
+  TON: [TON, "Toncoin", "TONCOIN"]
+  SOL: [SOL, "Solana", "SOLANA"]
+  ARBITRUM: [ARBI, "ARBITRUM", "Arbitrum One", "ArbitrumOne"]
+  POLYGON: [MATIC, POLYGON, "Polygon(MATIC)", "Polygon"]
+  APTOS: [APT, APTOS, "Aptos"]
